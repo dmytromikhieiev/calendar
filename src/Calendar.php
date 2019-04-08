@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Exception;
+
 /**
  * Class Calendar.
  */
@@ -38,10 +40,13 @@ class Calendar
     {
         $dateArr = explode('.', $date);
         if (!$dateArr || count($dateArr) !== 3) {
-            throw new \Exception('Bad date format');
+            throw new Exception('Bad date format');
         }
 
         list($day, $month, $year) = $dateArr;
+        if (!checkdate($month, $day, $year)) {
+            throw new Exception('Bad date format');
+        }
         $daysNumber = $this->countDaysFromBegin((int) $day, (int) $month, (int) $year);
         $index = $daysNumber % count(self::WEEK);
         $index = $index ? $index - 1 : count(self::WEEK) - 1;
@@ -50,7 +55,9 @@ class Calendar
     }
 
     /**
-     * @param string $date
+     * @param int $day
+     * @param int $month
+     * @param int $year
      *
      * @return int
      */

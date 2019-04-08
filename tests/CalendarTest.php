@@ -34,7 +34,25 @@ class CalendarTest extends TestCase
         $this->assertContains($res, Calendar::WEEK);
         $this->assertEquals('Tuesday', $res);
         $res = $this->calendar->getDayByDate('17.11.2013');
-        var_dump($res);
+        $this->assertTrue(is_string($res));
+        $this->assertContains($res, Calendar::WEEK);
+    }
+
+    /**
+     * testBadDateFormat
+     */
+    public function testNotADateFormat()
+    {
+        $this->expectException(\Exception::class);
+        $date = 'baddate';
+        $this->calendar->getDayByDate($date);
+    }
+
+    public function testBadFormatDate()
+    {
+        $this->expectException(\Exception::class);
+        $date = '13.25.3216';
+        $this->calendar->getDayByDate($date);
     }
 
     /**
